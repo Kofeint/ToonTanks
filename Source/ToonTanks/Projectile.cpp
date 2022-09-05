@@ -24,7 +24,10 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-
+	if(ShootSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this,ShootSound,GetActorLocation(),GetActorRotation());
+	}
 	ProjectileMesh->OnComponentHit.AddDynamic(this,&AProjectile::OnHit);
 }
 
@@ -51,8 +54,14 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	if (OtherActor && OtherActor != this && OtherActor != MyOwner)
 	{
 		UGameplayStatics::ApplyDamage(OtherActor,Damage,MyOwnerInstigator,MyOwner,DamageTypeClass);
-		UGameplayStatics::SpawnEmitterAtLocation(this,HitParticles,GetActorLocation(),GetActorRotation());
-
+		if(HitParticles)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(this,HitParticles,GetActorLocation(),GetActorRotation());
+		}
+	}
+	if(HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this,HitSound,OtherActor->GetActorLocation(),OtherActor->GetActorRotation());
 	}
 	Destroy();
 }
