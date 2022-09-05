@@ -6,7 +6,7 @@
 #include "Projectile.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Particles/ParticleSystemComponent.h"
+#include "Particles/ParticleSystem.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -25,14 +25,12 @@ ABasePawn::ABasePawn()
 	
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Spawn Point"));
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
-
-	DeathParticlesComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("DeathParticle"));
-	DeathParticlesComponent->SetupAttachment(RootComponent);
 }
 
 void ABasePawn::HandleDestruction()
 {
 	// TODO : Visual/sound effects
+	UGameplayStatics::SpawnEmitterAtLocation(this,DeathParticles,GetActorLocation(),GetActorRotation());
 }
 
 void ABasePawn::RotateTurret(FVector LookAtTarget)
