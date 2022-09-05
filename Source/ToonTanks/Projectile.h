@@ -46,4 +46,6 @@ private:
 	USoundBase* HitSound;
 	UPROPERTY(EditAnywhere,Category="Combat")
 	USoundBase* ShootSound;
+	UPROPERTY(EditAnywhere,Category="Combat")
+	TSubclassOf<UCameraShakeBase> HitCameraShakeClass; 
 };
